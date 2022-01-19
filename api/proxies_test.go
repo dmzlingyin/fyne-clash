@@ -1,6 +1,8 @@
 package api
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGetProxies(t *testing.T) {
 	proxy := GetProxies()
@@ -22,5 +24,13 @@ func TestProxyDelayByName(t *testing.T) {
 	actual := GetProxyDelayByName(name)
 	if actual == "" {
 		t.Error("get proxy delay error, test fail.")
+	}
+}
+
+func TestChangeProxyByName(t *testing.T) {
+	name := "A-Vip1丨倍率2丨香港10丨 原生丨Netflix丨"
+	actual := ChangeProxyByName(name)
+	if !actual {
+		t.Error("change proxy error, test fail.")
 	}
 }

@@ -40,7 +40,7 @@ func delayTest() {
 
 	for i, proxy := range proxies {
 		fmt.Println(api.GetProxyDelayByName(proxy))
-		progress.SetValue(float64(i))
+		progress.SetValue(float64(i + 1))
 	}
 	time.Sleep(time.Second)
 	Delay.Remove(progress)
