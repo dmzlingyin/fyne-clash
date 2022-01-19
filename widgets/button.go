@@ -23,15 +23,15 @@ func (b *MyButton) Tapped(*fyne.PointEvent) {
 
 	//使用goroutine进行代理延迟测试, 否则将阻塞事件循环, 严重会卡死窗口
 	// go api.GetProxyDelayByName(b.Text)
-	proxy := strings.Split(b.Text, "-")[0]
+	proxy := strings.Split(b.Text, "=")[0]
 	delay := api.GetProxyDelayByName(proxy)
-	b.Text = proxy + "-" + delay
+	b.Text = proxy + "=" + delay
 }
 
 // MyButton的工厂方法
 func NewButton(label, delay string) *MyButton {
 	button := &MyButton{}
-	button.Text = label + "-" + delay
+	button.Text = label + "=" + delay
 	button.Alignment = 1
 
 	button.ExtendBaseWidget(button)

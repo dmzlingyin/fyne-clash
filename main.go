@@ -14,7 +14,7 @@ func main() {
 	content := layout.NewLayout(window)
 	window.SetContent(content)
 	window.Resize(fyne.NewSize(800, 600))
-	window.SetFixedSize(true)
+	// window.SetFixedSize(true)
 	window.CenterOnScreen()
 	window.ShowAndRun()
 }

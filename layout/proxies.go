@@ -1,22 +1,47 @@
 package layout
 
 import (
+	"fmt"
+	"time"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 
 	"clashG/api"
 	"clashG/widgets"
 )
 
+var Delay = container.NewMax()
+
 func proxiesScreen() fyne.CanvasObject {
 	proxies := api.GetProxies().All
 	buttons := make([]fyne.CanvasObject, len(proxies))
+	delayButton := widget.NewButton("delay test", delayTest)
 	for i := 0; i < len(proxies); i++ {
 		button := widgets.NewButton(proxies[i], "Check")
 		buttons[i] = button
 	}
-	content := container.NewCenter(container.NewGridWithColumns(2, buttons...))
-	scroll := container.NewScroll(content)
+	Delay.Add(delayButton)
+	lay := container.NewVBox(Delay, container.NewGridWithColumns(2, buttons...))
+	content := container.NewCenter(lay)
+	// scroll := container.NewScroll(content)
 
-	return scroll
+	return content
+}
+
+func delayTest() {
+	proxies := api.GetProxies().All
+	progress := widget.NewProgressBar()
+	progress.Min = 0.0
+	progress.Max = float64(len(proxies))
+	Delay.Add(progress)
+	Delay.Refresh()
+
+	for i, proxy := range proxies {
+		fmt.Println(api.GetProxyDelayByName(proxy))
+		progress.SetValue(float64(i))
+	}
+	time.Sleep(time.Second)
+	Delay.Remove(progress)
 }
