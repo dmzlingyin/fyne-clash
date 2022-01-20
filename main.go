@@ -2,6 +2,7 @@ package main
 
 import (
 	"clashG/layout"
+	"clashG/theme"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -9,6 +10,8 @@ import (
 
 func main() {
 	app := app.New()
+	myTheme := theme.Theme{}
+	app.Settings().SetTheme(&myTheme)
 	window := app.NewWindow("clashG")
 
 	content := layout.NewLayout(window)
