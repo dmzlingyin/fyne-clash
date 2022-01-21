@@ -32,7 +32,7 @@ func generalScreen() fyne.CanvasObject {
 	systemProxy := canvas.NewText("System Proxy", color.White)
 	systemProxyValue := widget.NewCheck("", toggleSystemProxy)
 
-	startup := canvas.NewText("Start with Windows", color.White)
+	startup := canvas.NewText("Start with Linux", color.White)
 	startupValue := widget.NewCheck("", toggleStartup)
 
 	mainPanal := container.NewGridWithColumns(2, port, portValue, allowLAN, allowLANValue,
