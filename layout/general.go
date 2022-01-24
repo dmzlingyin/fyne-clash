@@ -8,6 +8,8 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
+
+	"clashG/api"
 )
 
 func generalScreen() fyne.CanvasObject {
@@ -55,9 +57,14 @@ func toggleSystemProxy(checked bool) {
 }
 
 func toggleStartup(checked bool) {
+	var err error
 	if checked {
-		log.Println("startup ok.")
+		err = api.AutoStart(checked)
 	} else {
-		log.Println("startup canceled.")
+		err = api.AutoStart(checked)
+	}
+
+	if err != nil {
+		log.Fatal(err)
 	}
 }
