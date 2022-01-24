@@ -1,0 +1,7 @@
+# clashG 配置文件
+
+# 系统代理
+system-proxy: false
+
+# 开机启动
+auto-start: true
