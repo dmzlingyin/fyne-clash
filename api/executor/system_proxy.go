@@ -20,7 +20,7 @@ import (
 
 var (
 	path    = "/home/lingyin/.config/kioslaverc"
-	address = "http://127.0.0.1"
+	address = "127.0.0.1"
 	port    = "7890"
 )
 
@@ -62,10 +62,10 @@ func SetProxy(proxyType int) error {
 
 	if proxyType == SystemProxy {
 		sec.Key("ProxyType").SetValue(strconv.Itoa(SystemProxy))
-		sec.Key("httpProxy").SetValue(address + ":" + port)
-		sec.Key("httpsProxy").SetValue(address + ":" + port)
-		sec.Key("ftpProxy").SetValue(address + ":" + port)
-		sec.Key("socksProxy").SetValue(address + ":" + port)
+		sec.Key("httpProxy").SetValue("http://" + address + ":" + port)
+		sec.Key("httpsProxy").SetValue("https://" + address + ":" + port)
+		sec.Key("ftpProxy").SetValue("ftp://" + address + ":" + port)
+		sec.Key("socksProxy").SetValue("socks://" + address + ":" + "7891")
 		sec.Key("NoProxyFor").SetValue("127.0.0.1,localhost")
 	} else {
 		sec.Key("ProxyType").SetValue(strconv.Itoa(NoProxy))
