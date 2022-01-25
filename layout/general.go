@@ -10,6 +10,15 @@ import (
 	"fyne.io/fyne/v2/widget"
 
 	"clashG/api"
+	"clashG/api/executor"
+)
+
+const (
+	NoProxy = iota
+	ManualProxy
+	AutoConfig
+	AutoDetect
+	SystemProxy
 )
 
 func generalScreen() fyne.CanvasObject {
@@ -33,6 +42,7 @@ func generalScreen() fyne.CanvasObject {
 
 	systemProxy := canvas.NewText("System Proxy", color.White)
 	systemProxyValue := widget.NewCheck("", toggleSystemProxy)
+	systemProxyValue.Checked = executor.IsSystemProxy()
 
 	startup := canvas.NewText("Start with Linux", color.White)
 	startupValue := widget.NewCheck("", toggleStartup)
@@ -53,7 +63,16 @@ func toggleLAN(checked bool) {
 }
 
 func toggleSystemProxy(checked bool) {
+	var err error
+	if checked {
+		err = executor.SetProxy(SystemProxy)
+	} else {
+		err = executor.SetProxy(NoProxy)
+	}
 
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func toggleStartup(checked bool) {
