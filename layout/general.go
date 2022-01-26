@@ -3,12 +3,14 @@ package layout
 import (
 	"image/color"
 	"log"
+	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 
+	"clashG/api"
 	"clashG/api/executor"
 )
 
@@ -26,17 +28,19 @@ func generalScreen() fyne.CanvasObject {
 	logo.Resize(fyne.NewSize(200, 200))
 	logoText := canvas.NewText("Clash Dashboard", color.White)
 	logoPanal := container.NewGridWithColumns(2, logo, logoText)
-
 	separator := widget.NewSeparator()
 
+	config := api.NewConfig()
 	port := canvas.NewText("Port", color.White)
-	portValue := canvas.NewText("7890", color.White)
+	portValue := canvas.NewText(strconv.Itoa(config.Port), color.White)
 
 	allowLAN := canvas.NewText("Allow LAN", color.White)
 	allowLANValue := widget.NewCheck("", toggleLAN)
+	allowLANValue.Checked = config.AllowLAN
 
 	logLevel := canvas.NewText("Log Level", color.White)
-	logLevelValue := widget.NewSelect([]string{"slient", "info", "warning", "error", "debug"}, setLevel)
+	logLevelValue := widget.NewSelect([]string{"silent", "info", "warning", "error", "debug"}, setLevel)
+	logLevelValue.SetSelected(config.LogLevel)
 	logLevelValue.MinSize()
 
 	systemProxy := canvas.NewText("System Proxy", color.White)
