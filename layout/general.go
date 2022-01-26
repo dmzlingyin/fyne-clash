@@ -9,7 +9,6 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 
-	"clashG/api"
 	"clashG/api/executor"
 )
 
@@ -46,6 +45,7 @@ func generalScreen() fyne.CanvasObject {
 
 	startup := canvas.NewText("Start with Linux", color.White)
 	startupValue := widget.NewCheck("", toggleStartup)
+	startupValue.Checked = executor.IsStartUp()
 
 	mainPanal := container.NewGridWithColumns(2, port, portValue, allowLAN, allowLANValue,
 		systemProxy, systemProxyValue, startup, startupValue, logLevel, logLevelValue)
@@ -78,9 +78,9 @@ func toggleSystemProxy(checked bool) {
 func toggleStartup(checked bool) {
 	var err error
 	if checked {
-		err = api.AutoStart(checked)
+		err = executor.AutoStart(checked)
 	} else {
-		err = api.AutoStart(checked)
+		err = executor.AutoStart(checked)
 	}
 
 	if err != nil {

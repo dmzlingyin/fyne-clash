@@ -6,7 +6,8 @@
 - [x] all proxies delay test
 - [x] change proxy
 - [x] start with linux
-- [ ] system proxy
+- [x] system proxy
+- [ ] config.yaml update
 
 ### YAML fields
 1. system-proxy: true or false
