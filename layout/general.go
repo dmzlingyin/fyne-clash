@@ -23,7 +23,7 @@ const (
 )
 
 func generalScreen() fyne.CanvasObject {
-	logo := canvas.NewImageFromFile("/home/lingyin/go/src/clashG/data/logo.png")
+	logo := canvas.NewImageFromFile("/home/lingyin/go/my_src/clashG/data/logo.png")
 	logo.FillMode = canvas.ImageFillOriginal
 	logo.Resize(fyne.NewSize(200, 200))
 	logoText := canvas.NewText("Clash Dashboard", color.White)

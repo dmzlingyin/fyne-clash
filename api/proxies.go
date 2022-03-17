@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type Proxy struct {
@@ -60,6 +61,7 @@ func GetProxies() Proxy {
 
 // 获取单个代理信息
 func GetProxyInfoByName(name string) string {
+
 	resp, err := http.Get(BaseUrl + "/proxies/" + name)
 	if err != nil {
 		log.Fatal(err)
@@ -74,6 +76,10 @@ func GetProxyInfoByName(name string) string {
 
 // 获取单个代理的延迟
 func GetProxyDelayByName(name string) string {
+	if ok := strings.HasSuffix(name, "\t"); ok {
+		name = name[:len(name)-2]
+	}
+
 	query := "timeout=" + TimeOut + "&url=" + URL
 	resp, err := http.Get(BaseUrl + "/proxies/" + name + "/delay?" + query)
 	if err != nil {
@@ -90,10 +96,12 @@ func GetProxyDelayByName(name string) string {
 		if err := json.Unmarshal(body, &delay); err != nil {
 			delay.Delay = -1
 		}
+		fmt.Println(delay.Delay)
 		return strconv.Itoa(delay.Delay)
 	} else {
 		var message Message
 		json.Unmarshal(body, &message)
+		fmt.Println(message.Message)
 		return message.Message
 	}
 }

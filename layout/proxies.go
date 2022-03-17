@@ -1,7 +1,6 @@
 package layout
 
 import (
-	"fmt"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -39,8 +38,8 @@ func delayTest() {
 	Delay.Refresh()
 
 	for i, proxy := range proxies {
-		fmt.Println(api.GetProxyDelayByName(proxy))
-		progress.SetValue(float64(i + 1))
+		go api.GetProxyDelayByName(proxy)
+		go progress.SetValue(float64(i + 1))
 	}
 	time.Sleep(time.Second)
 	Delay.Remove(progress)
