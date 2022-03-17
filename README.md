@@ -1,5 +1,5 @@
 ### Clash Dashboard
-file:///home/lingyin/Pictures/Screenshot_20220317_164701.png
+
 #### ToDo
 
 - [x] single proxy delay test
