@@ -22,7 +22,8 @@ func (b *MyButton) Tapped(*fyne.PointEvent) {
 	//使用goroutine进行代理延迟测试, 否则将阻塞事件循环, 严重会卡死窗口
 	// go api.GetProxyDelayByName(b.Text)
 	proxy := strings.Split(b.Text, "=")[0]
-	delay := api.GetProxyDelayByName(proxy)
+	ch := make(chan map[string]string, 1)
+	delay := api.GetProxyDelayByName(proxy, ch)
 	b.Text = proxy + "=" + delay
 	api.ChangeProxyByName(proxy)
 

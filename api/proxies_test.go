@@ -19,13 +19,13 @@ func TestGetProxyInfoByName(t *testing.T) {
 	}
 }
 
-func TestProxyDelayByName(t *testing.T) {
-	name := "Vip1丨新加坡01 "
-	actual := GetProxyDelayByName(name)
-	if actual == "" {
-		t.Error("get proxy delay error, test fail.")
-	}
-}
+// func TestProxyDelayByName(t *testing.T) {
+// 	name := "Vip1丨新加坡01 "
+// 	actual := GetProxyDelayByName(name)
+// 	if actual == "" {
+// 		t.Error("get proxy delay error, test fail.")
+// 	}
+// }
 
 func TestChangeProxyByName(t *testing.T) {
 	name := "A-Vip1丨倍率2丨香港10丨 原生丨Netflix丨"

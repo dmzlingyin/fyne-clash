@@ -75,7 +75,7 @@ func GetProxyInfoByName(name string) string {
 }
 
 // 获取单个代理的延迟
-func GetProxyDelayByName(name string) string {
+func GetProxyDelayByName(name string, ch chan map[string]string) string {
 	if ok := strings.HasSuffix(name, "\t"); ok {
 		name = name[:len(name)-2]
 	}
@@ -96,12 +96,14 @@ func GetProxyDelayByName(name string) string {
 		if err := json.Unmarshal(body, &delay); err != nil {
 			delay.Delay = -1
 		}
-		fmt.Println(delay.Delay)
+		// fmt.Println(delay.Delay)
+		ch <- map[string]string{name: strconv.Itoa(delay.Delay)}
 		return strconv.Itoa(delay.Delay)
 	} else {
 		var message Message
 		json.Unmarshal(body, &message)
-		fmt.Println(message.Message)
+		// fmt.Println(message.Message)
+		ch <- map[string]string{name: message.Message}
 		return message.Message
 	}
 }

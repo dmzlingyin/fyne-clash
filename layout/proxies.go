@@ -11,7 +11,11 @@ import (
 	"clashG/widgets"
 )
 
-var Delay = container.NewMax()
+var (
+	Delay          = container.NewMax()
+	vbox           = container.NewVBox()
+	contentProxies = container.NewCenter()
+)
 
 func proxiesScreen() fyne.CanvasObject {
 	proxies := api.GetProxies().All
@@ -22,10 +26,12 @@ func proxiesScreen() fyne.CanvasObject {
 		buttons[i] = button
 	}
 	Delay.Add(delayButton)
-	lay := container.NewVBox(Delay, container.NewGridWithColumns(2, buttons...))
-	content := container.NewCenter(lay)
+	vbox.Add(Delay)
+	vbox.Add(container.NewGridWithColumns(2, buttons...))
+	// lay := container.NewVBox(Delay, container.NewGridWithColumns(2, buttons...))
+	// content := container.NewCenter(lay)
 	// scroll := container.NewScroll(content)
-
+	contentProxies.Add(vbox)
 	return content
 }
 
@@ -37,10 +43,33 @@ func delayTest() {
 	Delay.Add(progress)
 	Delay.Refresh()
 
+	ch := make(chan map[string]string, len(proxies))
 	for i, proxy := range proxies {
-		go api.GetProxyDelayByName(proxy)
-		go progress.SetValue(float64(i + 1))
+		go api.GetProxyDelayByName(proxy, ch)
+		progress.SetValue(float64(i + 1))
 	}
-	time.Sleep(time.Second)
+
+	buttons := make([]fyne.CanvasObject, 0, len(proxies))
+	// for proxy := range ch {
+	// 	for k, v := range proxy {
+	// 		fmt.Println(k, v)
+	// 		// button := widgets.NewButton(k, v)
+	// 		// buttons = append(buttons, button)
+	// 	}
+	// }
+	select {
+	case name := <-ch:
+		for k, v := range name {
+			button := widgets.NewButton(k, v)
+			buttons = append(buttons, button)
+		}
+	default:
+		contentProxies.Remove(vbox)
+		vbox.Add(Delay)
+		vbox.Add(container.NewGridWithColumns(2, buttons...))
+		contentProxies.Add(vbox)
+	}
+
+	time.Sleep(2 * time.Second)
 	Delay.Remove(progress)
 }
