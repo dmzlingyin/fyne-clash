@@ -1,10 +1,12 @@
 package layout
 
 import (
+	"fmt"
 	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 
 	"clashG/api"
@@ -14,17 +16,22 @@ import (
 var (
 	Delay          = container.NewMax()
 	vbox           = container.NewVBox()
+	data           = binding.BindStringList(&[]string{})
 	contentProxies = container.NewCenter()
 )
 
 func proxiesScreen() fyne.CanvasObject {
 	proxies := api.GetProxies().All
+	data.Set(proxies)
+
 	buttons := make([]fyne.CanvasObject, len(proxies))
-	delayButton := widget.NewButton("delay test", delayTest)
-	for i := 0; i < len(proxies); i++ {
-		button := widgets.NewButton(proxies[i], "Check")
+	for i := 0; i < data.Length(); i++ {
+		v, _ := data.GetValue(i)
+		button := widgets.NewButton(v, "Check")
 		buttons[i] = button
 	}
+
+	delayButton := widget.NewButton("delay test", delayTest)
 	Delay.Add(delayButton)
 	vbox.Add(Delay)
 	vbox.Add(container.NewGridWithColumns(2, buttons...))
@@ -32,7 +39,7 @@ func proxiesScreen() fyne.CanvasObject {
 	// content := container.NewCenter(lay)
 	// scroll := container.NewScroll(content)
 	contentProxies.Add(vbox)
-	return content
+	return contentProxies
 }
 
 func delayTest() {
@@ -50,25 +57,24 @@ func delayTest() {
 	}
 
 	buttons := make([]fyne.CanvasObject, 0, len(proxies))
-	// for proxy := range ch {
-	// 	for k, v := range proxy {
-	// 		fmt.Println(k, v)
-	// 		// button := widgets.NewButton(k, v)
-	// 		// buttons = append(buttons, button)
-	// 	}
-	// }
-	select {
-	case name := <-ch:
-		for k, v := range name {
+	num := 15
+	for proxy := range ch {
+		for k, v := range proxy {
+			fmt.Println(k, v)
 			button := widgets.NewButton(k, v)
 			buttons = append(buttons, button)
 		}
-	default:
-		contentProxies.Remove(vbox)
-		vbox.Add(Delay)
-		vbox.Add(container.NewGridWithColumns(2, buttons...))
-		contentProxies.Add(vbox)
+		num--
+		if num <= 0 {
+			break
+		}
 	}
+
+	contentProxies.Remove(vbox)
+	vbox.Add(Delay)
+	vbox.Add(container.NewGridWithColumns(2, buttons...))
+	contentProxies.Add(vbox)
+	// contentProxies.Refresh()
 
 	time.Sleep(2 * time.Second)
 	Delay.Remove(progress)
