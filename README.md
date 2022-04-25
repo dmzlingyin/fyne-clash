@@ -13,6 +13,6 @@
 - [x] delay test using goroutine
 - [ ] profile layout
 - [ ] logs layout
-- [ ] unicode support
+- [x] unicode support
 
 #### 不同机场的节点名称不太一致，需做好检查
