@@ -1,12 +1,16 @@
 package layout
 
 import (
-	"fmt"
+	"log"
+	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+
+	"clashG/api"
+	"clashG/api/executor"
 )
 
 var (
@@ -23,5 +27,19 @@ func profilesScreen() fyne.CanvasObject {
 }
 
 func configDownload() {
-	fmt.Println(input.Text)
+	url := input.Text
+	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+		log.Println("Invalid url.")
+		return
+	}
+
+	err := executor.DownloadConfig(url)
+	if err != nil {
+		log.Println("Download failed, please make sure your network are working.")
+	}
+	// clash 热更新配置文件
+	err = api.Reload()
+	if err != nil {
+		log.Println("Reload config failed.")
+	}
 }

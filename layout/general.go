@@ -73,7 +73,6 @@ func toggleSystemProxy(checked bool) {
 	} else {
 		err = executor.SetProxy(NoProxy)
 	}
-
 	if err != nil {
 		log.Println(err)
 	}
@@ -86,7 +85,6 @@ func toggleStartup(checked bool) {
 	} else {
 		err = executor.AutoStart(checked)
 	}
-
 	if err != nil {
 		log.Fatal(err)
 	}

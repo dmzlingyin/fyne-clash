@@ -81,6 +81,7 @@ func GetProxyDelayByName(name string, ch chan map[string]string) string {
 	}
 
 	query := "timeout=" + TimeOut + "&url=" + URL
+	fmt.Println(BaseUrl + "/proxies/" + name + "/delay?" + query)
 	resp, err := http.Get(BaseUrl + "/proxies/" + name + "/delay?" + query)
 	if err != nil {
 		log.Fatal(err)
@@ -124,13 +125,11 @@ func ChangeProxyByName(name string) bool {
 		log.Println(err)
 	}
 
-	body, _ := io.ReadAll(resp.Body)
+	_, _ = io.ReadAll(resp.Body)
 	resp.Body.Close()
 	if resp.StatusCode == 204 {
-		fmt.Println(string(body))
 		return true
 	} else {
-		fmt.Println(string(body))
 		return false
 	}
 }

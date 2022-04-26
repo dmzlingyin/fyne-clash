@@ -1,10 +1,11 @@
 package api
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestReload(t *testing.T) {
-	err := Reload()
-	if err != nil {
-		t.Error("test fail.")
-	}
+	assert.Equal(t, nil, Reload(), "Reload failed.")
 }
