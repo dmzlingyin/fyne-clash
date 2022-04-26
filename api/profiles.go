@@ -3,7 +3,6 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"io"
 	"net/http"
 )
 
@@ -22,11 +21,6 @@ func Reload() error {
 	client := &http.Client{}
 	req, _ := http.NewRequest(http.MethodPut, BaseUrl+"/configs?force=true", bytes.NewBuffer(json))
 	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	_, err = io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}

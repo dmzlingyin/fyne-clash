@@ -63,7 +63,7 @@ func setLevel(value string) {
 }
 
 func toggleLAN(checked bool) {
-	log.Print(checked)
+	api.PatchConfigs("allow-lan", checked)
 }
 
 func toggleSystemProxy(checked bool) {

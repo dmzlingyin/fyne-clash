@@ -127,9 +127,5 @@ func ChangeProxyByName(name string) bool {
 
 	_, _ = io.ReadAll(resp.Body)
 	resp.Body.Close()
-	if resp.StatusCode == 204 {
-		return true
-	} else {
-		return false
-	}
+	return resp.StatusCode == 204
 }

@@ -1,8 +1,10 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -48,4 +50,42 @@ func GetConfigs() (*Config, error) {
 	}
 
 	return &config, nil
+}
+
+// PatchConfigs 增量修改clash配置
+func PatchConfigs(key string, value interface{}) bool {
+	switch key {
+	case "port":
+	case "socks-port":
+	case "redir-port":
+	case "mode":
+	case "log-level":
+	case "allow-lan":
+		if v, ok := value.(bool); ok {
+			config := struct {
+				AllowLan bool `json:"allow-lan"`
+			}{v}
+			return patch(config)
+		}
+	default:
+		log.Println("invalid setting item.")
+	}
+	return true
+}
+
+func patch(c interface{}) bool {
+	config, err := json.Marshal(c)
+	if err != nil {
+		log.Println("marshal config failed.")
+		return false
+	}
+
+	client := &http.Client{}
+	req, _ := http.NewRequest(http.MethodPatch, BaseUrl+"/configs", bytes.NewBuffer(config))
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+	resp.Body.Close()
+	return resp.StatusCode == 204
 }
