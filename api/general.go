@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -53,7 +54,8 @@ func GetConfigs() (*Config, error) {
 }
 
 // PatchConfigs 增量修改clash配置
-func PatchConfigs(key string, value interface{}) bool {
+func PatchConfigs(key string, value interface{}) error {
+	res := true
 	switch key {
 	case "port":
 	case "socks-port":
@@ -65,12 +67,16 @@ func PatchConfigs(key string, value interface{}) bool {
 			config := struct {
 				AllowLan bool `json:"allow-lan"`
 			}{v}
-			return patch(config)
+			res = patch(config)
 		}
 	default:
 		log.Println("invalid setting item.")
 	}
-	return true
+	if !res {
+		return errors.New("set " + key + " failed.")
+	} else {
+		return nil
+	}
 }
 
 func patch(c interface{}) bool {
