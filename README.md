@@ -11,7 +11,7 @@
 - [x] start with linux
 - [x] system proxy
 - [x] delay test using goroutine
-- [ ] profile layout
+- [x] profile layout
 - [ ] logs layout
 - [x] unicode support
 
