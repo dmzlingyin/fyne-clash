@@ -15,5 +15,5 @@
 - [x] profile layout
 - [ ] logs layout
 - [x] unicode support
-- [ ] glorify UIk
+- [ ] glorify UI
 - [ ] release binary version
