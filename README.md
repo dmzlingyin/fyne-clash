@@ -1,4 +1,5 @@
 ### Clash Dashboard
+#### just for fun
 
 <h1 align="center">
   <img src="https://github.com/dmzlingyin/clashG/blob/main/data/clash.png" alt="clashG">
@@ -14,5 +15,5 @@
 - [x] profile layout
 - [ ] logs layout
 - [x] unicode support
-
-#### 不同机场的节点名称不太一致，需做好检查
+- [ ] glorify UIk
+- [ ] release binary version
