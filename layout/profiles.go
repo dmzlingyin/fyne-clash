@@ -31,6 +31,10 @@ func configDownload() {
 		log.Println("Invalid url.")
 		return
 	}
+	if !strings.Contains(url, "clash") {
+		log.Println("Invalid clash describe url.")
+		return
+	}
 
 	go func() {
 		err := executor.DownloadConfig(url)
