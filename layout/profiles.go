@@ -21,7 +21,6 @@ func profilesScreen() fyne.CanvasObject {
 	input.SetPlaceHolder("please input a url or copy a url here")
 	download := widget.NewButton("Download", configDownload)
 	topPanal := container.NewGridWithColumns(2, input, download)
-
 	content := container.New(layout.NewBorderLayout(topPanal, nil, nil, nil), topPanal)
 	return content
 }
@@ -33,13 +32,15 @@ func configDownload() {
 		return
 	}
 
-	err := executor.DownloadConfig(url)
-	if err != nil {
-		log.Println("Download failed, please make sure your network are working.")
-	}
-	// clash 热更新配置文件
-	err = api.Reload()
-	if err != nil {
-		log.Println("Reload config failed.")
-	}
+	go func() {
+		err := executor.DownloadConfig(url)
+		if err != nil {
+			log.Println("Download failed, please make sure your network are working.")
+		}
+		// clash 热更新配置文件
+		err = api.Reload()
+		if err != nil {
+			log.Println("Reload config failed.")
+		}
+	}()
 }
