@@ -53,7 +53,7 @@ func GetProxies() Proxy {
 		log.Fatal(err)
 	}
 
-	if proxy, ok := proxies.Proxies["Proxy"]; ok {
+	if proxy, ok := proxies.Proxies["GLOBAL"]; ok {
 		return proxy
 	}
 	return Proxy{}
