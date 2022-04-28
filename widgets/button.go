@@ -2,6 +2,7 @@ package widgets
 
 import (
 	"clashG/api"
+	"log"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -25,7 +26,10 @@ func (b *MyButton) Tapped(*fyne.PointEvent) {
 	ch := make(chan map[string]string, 1)
 	delay := api.GetProxyDelayByName(proxy, ch)
 	b.Text = proxy + "=" + delay
-	api.ChangeProxyByName(proxy)
+	ok := api.ChangeProxyByName(proxy)
+	if !ok {
+		log.Println(proxy + "change proxy failed.")
+	}
 
 	b.Refresh()
 }

@@ -3,7 +3,7 @@ package executor
 import "testing"
 
 func TestDownloadConfig(t *testing.T) {
-	err := DownloadConfig("https://www.jafiyun.fun/link/oR4pib4Kggdk1Ik0?clash=1")
+	err := DownloadConfig("https://stc-anycast.net/link/vFN5GEw7JDDmggpH?sub=3&client=clash")
 	if err != nil {
 		t.Error("test fail.")
 	}

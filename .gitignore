@@ -2,3 +2,4 @@ main
 *.exe
 *.out
 settings/config.yaml
+test.json

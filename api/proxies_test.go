@@ -2,35 +2,20 @@ package api
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetProxies(t *testing.T) {
-	proxy := GetProxies()
-	if proxy.Name == "" {
-		t.Error("get proxy name error, test fail.")
-	}
+	assert.NotEqual(t, "", GetProxies().Name, "proxy is empty.")
 }
 
 func TestGetProxyInfoByName(t *testing.T) {
-	name := "A-Vip1丨倍率2丨香港10丨 原生丨Netflix丨"
-	actual := GetProxyInfoByName(name)
-	if actual == "" {
-		t.Error("get proxy info error, test fail.")
-	}
+	name := "🇭🇰 香港 B06V"
+	assert.NotEqual(t, "", GetProxyInfoByName(name), "get proxy info failed.")
 }
 
-// func TestProxyDelayByName(t *testing.T) {
-// 	name := "Vip1丨新加坡01 "
-// 	actual := GetProxyDelayByName(name)
-// 	if actual == "" {
-// 		t.Error("get proxy delay error, test fail.")
-// 	}
-// }
-
 func TestChangeProxyByName(t *testing.T) {
-	name := "A-Vip1丨倍率2丨香港10丨 原生丨Netflix丨"
-	actual := ChangeProxyByName(name)
-	if !actual {
-		t.Error("change proxy error, test fail.")
-	}
+	name := "🇭🇰 香港 B06V"
+	assert.Equal(t, true, ChangeProxyByName(name), "change proxy failed.")
 }

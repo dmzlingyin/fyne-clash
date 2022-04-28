@@ -118,14 +118,12 @@ func ChangeProxyByName(name string) bool {
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest(http.MethodPut, BaseUrl+"/proxies/Proxy", bytes.NewBuffer(json))
+	req, _ := http.NewRequest(http.MethodPut, BaseUrl+"/proxies/GLOBAL", bytes.NewBuffer(json))
 
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println(err)
 	}
-
-	_, _ = io.ReadAll(resp.Body)
 	resp.Body.Close()
 	return resp.StatusCode == 204
 }
