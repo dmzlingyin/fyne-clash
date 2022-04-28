@@ -2,23 +2,38 @@ package layout
 
 import (
 	"log"
-	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"golang.design/x/clipboard"
 
 	"clashG/api"
 	"clashG/api/executor"
+	"clashG/api/utils"
 )
 
 var (
 	input = widget.NewEntry()
 )
 
+// 粘贴板初始化
+func init() {
+	err := clipboard.Init()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func profilesScreen() fyne.CanvasObject {
-	input.SetPlaceHolder("please input a url or copy a url here")
+	clip := string(clipboard.Read(clipboard.FmtText))
+	if utils.IsUrlValid(clip) {
+		input.SetText(clip)
+	} else {
+		input.SetPlaceHolder("please input a url or copy a url here")
+	}
+
 	download := widget.NewButton("Download", configDownload)
 	topPanal := container.NewGridWithColumns(2, input, download)
 	content := container.New(layout.NewBorderLayout(topPanal, nil, nil, nil), topPanal)
@@ -27,15 +42,9 @@ func profilesScreen() fyne.CanvasObject {
 
 func configDownload() {
 	url := input.Text
-	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
-		log.Println("Invalid url.")
+	if !utils.IsUrlValid(url) {
 		return
 	}
-	if !strings.Contains(url, "clash") {
-		log.Println("Invalid clash describe url.")
-		return
-	}
-
 	go func() {
 		err := executor.DownloadConfig(url)
 		if err != nil {

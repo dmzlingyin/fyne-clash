@@ -17,7 +17,7 @@
 - [x] profile layout
 - [ ] logs layout
 - [x] chinese support
-- [ ] recognation url from clipboard
+- [x] recognation url from clipboard
 - [ ] emojs support
 - [ ] glorify UI
 - [ ] release binary version

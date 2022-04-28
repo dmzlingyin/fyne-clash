@@ -3,12 +3,15 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
+)
+
+var (
+	ProxyType = "🚀 节点选择"
 )
 
 type Proxy struct {
@@ -52,8 +55,7 @@ func GetProxies() Proxy {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	if proxy, ok := proxies.Proxies["GLOBAL"]; ok {
+	if proxy, ok := proxies.Proxies[ProxyType]; ok {
 		return proxy
 	}
 	return Proxy{}
@@ -81,7 +83,6 @@ func GetProxyDelayByName(name string, ch chan map[string]string) string {
 	}
 
 	query := "timeout=" + TimeOut + "&url=" + URL
-	fmt.Println(BaseUrl + "/proxies/" + name + "/delay?" + query)
 	resp, err := http.Get(BaseUrl + "/proxies/" + name + "/delay?" + query)
 	if err != nil {
 		log.Fatal(err)
@@ -97,13 +98,11 @@ func GetProxyDelayByName(name string, ch chan map[string]string) string {
 		if err := json.Unmarshal(body, &delay); err != nil {
 			delay.Delay = -1
 		}
-		// fmt.Println(delay.Delay)
 		ch <- map[string]string{name: strconv.Itoa(delay.Delay)}
 		return strconv.Itoa(delay.Delay)
 	} else {
 		var message Message
 		json.Unmarshal(body, &message)
-		// fmt.Println(message.Message)
 		ch <- map[string]string{name: message.Message}
 		return message.Message
 	}
@@ -118,7 +117,7 @@ func ChangeProxyByName(name string) bool {
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest(http.MethodPut, BaseUrl+"/proxies/GLOBAL", bytes.NewBuffer(json))
+	req, _ := http.NewRequest(http.MethodPut, BaseUrl+"/proxies/"+ProxyType, bytes.NewBuffer(json))
 
 	resp, err := client.Do(req)
 	if err != nil {
