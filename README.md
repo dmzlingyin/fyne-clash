@@ -21,3 +21,4 @@
 - [ ] emojs support
 - [ ] glorify UI
 - [ ] release binary version
+- [ ] running time show
